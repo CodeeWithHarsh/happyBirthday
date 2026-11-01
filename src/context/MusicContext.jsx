@@ -17,7 +17,9 @@ export function MusicProvider({ children }) {
     const start = audio.volume
     const t0 = performance.now()
     const step = (now) => {
-      const p = Math.min((now - t0) / 1800, 1)
+      // A frame's timestamp can be slightly earlier than t0; a negative p would
+      // set a negative volume, which throws and leaves the song stuck silent.
+      const p = Math.min(Math.max((now - t0) / 1800, 0), 1)
       audio.volume = start + (target - start) * p
       if (p < 1) fadeRef.current = requestAnimationFrame(step)
       else done?.()
@@ -87,6 +89,11 @@ export function MusicProvider({ children }) {
         src={birthdayData.music}
         loop
         preload="auto"
+        // Phones pause audio on their own (switching apps, locking the screen,
+        // a call) and can resume it from lock-screen controls — keep the
+        // button in sync so one tap always does what it shows.
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
         onError={() => {
           setMissing(true)
           setPlaying(false)

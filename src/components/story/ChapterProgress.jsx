@@ -4,6 +4,7 @@ import { Check, Lock } from 'lucide-react'
 import { HeartShape } from '../ui/Icons'
 import { useStory } from '../../context/StoryContext'
 import { birthdayData } from '../../data/birthdayData'
+import { move } from '../../utils/motion'
 
 const NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X']
 
@@ -156,7 +157,7 @@ function Step({ step, numeral, status, onOpen, onLocked }) {
         <motion.span
           aria-hidden="true"
           className="absolute -inset-1 rounded-full border border-blush-400"
-          animate={{ scale: [1, 1.35], opacity: [0.8, 0] }}
+          animate={{ transform: move(['scale(1)', 'scale(1.35)']), opacity: [0.8, 0] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut' }}
         />
       )}

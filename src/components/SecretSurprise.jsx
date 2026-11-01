@@ -8,6 +8,7 @@ import { EASE } from './ui/RevealText'
 import { birthdayData } from '../data/birthdayData'
 import { pinkBurst } from '../utils/effects'
 import { useScrollLock } from '../hooks/useScrollLock'
+import { move } from '../utils/motion'
 
 /** A tiny, barely-visible heart. Clicking it reveals a secret message. */
 export default function SecretSurprise({ className = '' }) {
@@ -34,7 +35,7 @@ export default function SecretSurprise({ className = '' }) {
         {/* every few seconds it "breathes" and glints, so a curious eye catches it */}
         <motion.span
           className="relative grid place-items-center"
-          animate={{ scale: [1, 1, 1.45, 1, 1.3, 1], opacity: [0.55, 0.55, 1, 0.75, 1, 0.55] }}
+          animate={{ transform: move(['scale(1)', 'scale(1)', 'scale(1.45)', 'scale(1)', 'scale(1.3)', 'scale(1)']), opacity: [0.55, 0.55, 1, 0.75, 1, 0.55] }}
           transition={{ duration: 4.5, repeat: Infinity, times: [0, 0.7, 0.78, 0.86, 0.93, 1] }}
         >
           <HeartShape className="h-5 w-5 text-blush-500 drop-shadow-[0_0_6px_rgba(239,143,171,0.8)] transition duration-500 group-hover:scale-150" />
@@ -75,7 +76,7 @@ export default function SecretSurprise({ className = '' }) {
 
                 <motion.div
                   className="mx-auto h-16 w-16 text-blush-500"
-                  animate={{ scale: [1, 1.18, 1, 1.12, 1] }}
+                  animate={{ transform: move(['scale(1)', 'scale(1.18)', 'scale(1)', 'scale(1.12)', 'scale(1)']) }}
                   transition={{ duration: 1.6, repeat: Infinity }}
                 >
                   <HeartShape className="h-full w-full drop-shadow-[0_8px_18px_rgba(239,143,171,0.7)]" />

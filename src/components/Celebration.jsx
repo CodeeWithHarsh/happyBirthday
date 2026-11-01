@@ -6,6 +6,7 @@ import { EASE } from './ui/RevealText'
 import { birthdayData } from '../data/birthdayData'
 import { celebrate } from '../utils/effects'
 import { useScrollLock } from '../hooks/useScrollLock'
+import { move } from '../utils/motion'
 
 /** The huge YES celebration: flash, confetti, heart rain, glowing screen. */
 export default function Celebration({ open, onContinue }) {
@@ -57,13 +58,13 @@ function CelebrationScene({ onContinue }) {
       {/* glowing pink world */}
       <motion.div
         className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#fff5f8_0%,#ffd1dc_45%,#ef8fab_100%)]"
-        initial={{ scale: 1.4 }}
-        animate={{ scale: 1 }}
+        initial={{ transform: move('scale(1.4)') }}
+        animate={{ transform: move('scale(1)') }}
         transition={{ duration: 2.4, ease: EASE }}
       />
       <motion.div
         className="absolute top-1/2 left-1/2 aspect-square w-[130vmax] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(255,255,255,0.9),transparent)]"
-        animate={{ scale: [0.6, 1, 0.6], opacity: [0.4, 0.8, 0.4] }}
+        animate={{ transform: move(['scale(0.6)', 'scale(1)', 'scale(0.6)']), opacity: [0.4, 0.8, 0.4] }}
         transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
       />
 
@@ -82,8 +83,8 @@ function CelebrationScene({ onContinue }) {
           aria-hidden="true"
           className="absolute -bottom-15"
           style={{ left: h.left, width: h.size, height: h.size, color: h.color }}
-          initial={{ y: 0, x: 0, opacity: 0 }}
-          animate={{ y: '-115vh', x: h.drift, opacity: [0, 1, 1, 0], rotate: h.drift / 4 }}
+          initial={{ transform: move('translateX(0px) translateY(0vh) rotate(0deg)'), opacity: 0 }}
+          animate={{ transform: move(`translateX(${h.drift}px) translateY(-115vh) rotate(${h.drift / 4}deg)`), opacity: [0, 1, 1, 0] }}
           transition={{ duration: h.duration, delay: h.delay, repeat: Infinity, ease: 'easeOut' }}
         >
           <HeartShape className="h-full w-full drop-shadow-[0_4px_10px_rgba(231,121,154,0.5)]" />

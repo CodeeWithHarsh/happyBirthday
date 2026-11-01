@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 import { birthdayData } from '../../data/birthdayData'
+import { move } from '../../utils/motion'
 
 const NEAR_END = 140 // px left to scroll before the hint hides
 
@@ -52,7 +53,7 @@ export default function ScrollHint({ scrollRef, light = false }) {
           }`}
         >
           <span className="text-[10px] tracking-[0.35em] uppercase">{birthdayData.navigation.scroll}</span>
-          <motion.span animate={{ y: [0, 5, 0] }} transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}>
+          <motion.span animate={{ transform: move(['translateY(0px)', 'translateY(5px)', 'translateY(0px)']) }} transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}>
             <ChevronDown className="h-4 w-4" strokeWidth={2} />
           </motion.span>
         </motion.button>

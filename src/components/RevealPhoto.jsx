@@ -8,6 +8,7 @@ import { HeartShape } from './ui/Icons'
 import { EASE, Reveal } from './ui/RevealText'
 import { birthdayData } from '../data/birthdayData'
 import { pinkBurst } from '../utils/effects'
+import { move } from '../utils/motion'
 
 /** A blurred photo hiding a surprise. */
 export default function RevealPhoto({ children }) {
@@ -53,7 +54,7 @@ export default function RevealPhoto({ children }) {
                     exit={{ opacity: 0, transition: { duration: 1.2 } }}
                   >
                     <motion.div
-                      animate={{ y: [0, -6, 0] }}
+                      animate={{ transform: move(['translateY(0px)', 'translateY(-6px)', 'translateY(0px)']) }}
                       transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                       className="glass mb-6 grid h-14 w-14 place-items-center rounded-full text-rose-ink"
                     >

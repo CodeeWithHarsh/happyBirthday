@@ -7,6 +7,7 @@ import { HeartShape, Sparkle } from './ui/Icons'
 import { EASE, LetterReveal } from './ui/RevealText'
 import { birthdayData } from '../data/birthdayData'
 import { pinkBurst } from '../utils/effects'
+import { move } from '../utils/motion'
 
 const REACT_FOR = 1900 // ms the reaction stays before the shayari begins
 const HOLD_FOR = 1600 // ms she has to hold the heart for "hold" questions
@@ -118,9 +119,9 @@ export default function ShayariSection({ children }) {
           <AnimatePresence mode="wait">
             <motion.article
               key={current}
-              initial={{ opacity: 0, y: 40, rotateX: 12, filter: 'blur(10px)' }}
-              animate={{ opacity: 1, y: 0, rotateX: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -30, filter: 'blur(10px)', transition: { duration: 0.45 } }}
+              initial={{ opacity: 0, transform: move('translateY(40px) rotateX(12deg)'), filter: 'blur(10px)' }}
+              animate={{ opacity: 1, transform: move('translateY(0px) rotateX(0deg)'), filter: 'blur(0px)' }}
+              exit={{ opacity: 0, transform: move('translateY(-30px) rotateX(0deg)'), filter: 'blur(10px)', transition: { duration: 0.45 } }}
               transition={{ duration: 0.9, ease: EASE }}
               className="relative rounded-[2.2rem] border border-white bg-white/70 px-5 pt-8 pb-10 text-center shadow-[0_30px_80px_-30px_rgba(194,79,120,0.45)] backdrop-blur-md sm:px-12 sm:pt-10 sm:pb-12"
             >
@@ -137,9 +138,9 @@ export default function ShayariSection({ children }) {
                   {phase === 'react' && (
                     <motion.div
                       key="react"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 1.08, filter: 'blur(8px)' }}
+                      initial={{ opacity: 0, transform: move('scale(0.8)') }}
+                      animate={{ opacity: 1, transform: move('scale(1)') }}
+                      exit={{ opacity: 0, transform: move('scale(1.08)'), filter: 'blur(8px)' }}
                       transition={{ duration: 0.6, ease: EASE }}
                       className="flex min-h-56 flex-col items-center justify-center gap-5"
                     >
@@ -165,8 +166,8 @@ export default function ShayariSection({ children }) {
 
         {finished && (
           <motion.p
-            initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            initial={{ opacity: 0, transform: move('translateY(20px)'), filter: 'blur(8px)' }}
+            animate={{ opacity: 1, transform: move('translateY(0px)'), filter: 'blur(0px)' }}
             transition={{ duration: 1.2, delay: 0.3, ease: EASE }}
             className="mx-auto mt-14 max-w-xl text-center font-script text-4xl leading-snug text-rose-ink sm:text-5xl"
           >
@@ -194,8 +195,8 @@ function Ask({ ask, onAnswer }) {
         <LetterReveal text={ask.question} show stagger={0.025} />
       </p>
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, transform: move('translateY(16px)') }}
+        animate={{ opacity: 1, transform: move('translateY(0px)') }}
         transition={{ delay: Math.min(2.2, ask.question.length * 0.025 + 0.3), duration: 0.7, ease: EASE }}
         className="mt-9 w-full"
       >
@@ -390,8 +391,8 @@ function Verses({ poem, irshaad, quick, button, onWah }) {
           return (
             <motion.p
               key={`${skip}-${i}`}
-              initial={{ opacity: 0, y: 14, filter: 'blur(8px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              initial={{ opacity: 0, transform: move('translateY(14px)'), filter: 'blur(8px)' }}
+              animate={{ opacity: 1, transform: move('translateY(0px)'), filter: 'blur(0px)' }}
               transition={{ duration: 0.9, delay: start + i * gap, ease: EASE }}
               className={
                 glow
@@ -407,8 +408,8 @@ function Verses({ poem, irshaad, quick, button, onWah }) {
       {button && (
         <motion.div
           key={`wah-${skip}`}
-          initial={{ opacity: 0, y: 16, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
+          initial={{ opacity: 0, transform: move('translateY(16px) scale(0.9)') }}
+          animate={{ opacity: 1, transform: move('translateY(0px) scale(1)') }}
           transition={{ duration: 0.7, delay: end, ease: EASE }}
           className="mt-10"
           onClick={(e) => e.stopPropagation()}

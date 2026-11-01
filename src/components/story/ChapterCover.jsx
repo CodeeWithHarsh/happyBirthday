@@ -2,13 +2,14 @@ import { motion } from 'framer-motion'
 import GlowButton from '../ui/GlowButton'
 import { HeartShape } from '../ui/Icons'
 import { EASE, LetterReveal } from '../ui/RevealText'
+import { move } from '../../utils/motion'
 
 // Starts once the gate has swung shut
 const BASE = 0.9
 
 const show = (delay) => ({
-  initial: { opacity: 0, y: 18, filter: 'blur(10px)' },
-  animate: { opacity: 1, y: 0, filter: 'blur(0px)' },
+  initial: { opacity: 0, transform: move('translateY(18px)'), filter: 'blur(10px)' },
+  animate: { opacity: 1, transform: move('translateY(0px)'), filter: 'blur(0px)' },
   transition: { duration: 1.2, delay: BASE + delay, ease: EASE },
 })
 

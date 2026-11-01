@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import ScrollHint from './ScrollHint'
 import { EASE } from '../ui/RevealText'
 import { PageScrollContext, useStory } from '../../context/StoryContext'
+import { move } from '../../utils/motion'
 
 /**
  * A chapter's own page: full screen, with its own scroll and a "Scroll ↓"
@@ -19,8 +20,8 @@ export default function ContentPage({ background, children, zIndex = 20, light =
     <motion.div
       className="fixed inset-0"
       style={{ zIndex, background }}
-      initial={forward ? { opacity: 0, scale: 0.9, y: 60 } : { opacity: 0 }}
-      animate={{ opacity: 1, scale: 1, y: 0, transition: { duration: 1.1, delay: forward ? 0.3 : 0.1, ease: EASE } }}
+      initial={{ opacity: 0, transform: move(forward ? 'translateY(60px) scale(0.9)' : 'translateY(0px) scale(1)') }}
+      animate={{ opacity: 1, transform: move('translateY(0px) scale(1)'), transition: { duration: 1.1, delay: forward ? 0.3 : 0.1, ease: EASE } }}
       exit={{ opacity: 0, transition: { duration: 0.3, delay: 1.2 } }}
     >
       <div ref={ref} className="page-scroll absolute inset-0 overflow-x-hidden overflow-y-auto overscroll-contain">

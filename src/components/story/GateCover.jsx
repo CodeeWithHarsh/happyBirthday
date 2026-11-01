@@ -1,76 +1,80 @@
-import { motion } from 'framer-motion'
+import { useEffect } from 'react'
+import { animate, motion, useMotionValue, usePresence, useTransform } from 'framer-motion'
 import { HeartShape, Sparkle } from '../ui/Icons'
 
 const SWING = 105 // degrees each door turns when fully open
-const SIDES = ['left', 'right']
 
 /**
  * A full-screen pair of 3D gate doors with the cover content floating in front.
  *
- * Everything is driven by one CSS variable on the outer element, `--open`
- * (0 = shut, 1 = wide open), so the doors, the light and the content always
- * move together:
+ * Everything is driven by one motion value, `open` (0 = shut, 1 = wide open),
+ * so the doors, the light and the content always move together:
  *  - arriving: the doors swing shut over the page she just finished
  *  - leaving:  the content fades forward, the doors swing inward and light
  *              pours through the gap while the next page rises behind
+ *
+ * Each layer gets its own transform/opacity from `open` (rather than sharing an
+ * inherited CSS variable), so a frame only restyles those few layers instead of
+ * every element on the cover — much smoother on phones.
  */
 export default function GateCover({ background, dark = false, children, zIndex = 30 }) {
+  const open = useMotionValue(1)
+  const [isPresent, safeToRemove] = usePresence()
+
+  useEffect(() => {
+    const controls = isPresent
+      ? animate(open, 0, { duration: 1.3, ease: [0.22, 1, 0.36, 1] })
+      : animate(open, 1, { duration: 1.7, ease: [0.6, 0, 0.25, 1], onComplete: safeToRemove })
+    return () => controls.stop()
+  }, [isPresent, open, safeToRemove])
+
+  const lightOpacity = useTransform(open, (v) => Math.min(v * 3.5, (1 - v) * 2.2))
+  const gateTransform = useTransform(open, (v) => `scale(${1 + v * 0.12})`)
+  const contentOpacity = useTransform(open, (v) => 1 - v * 3.5)
+  const contentTransform = useTransform(open, (v) => `scale(${1 + v * 0.35})`)
+  const contentFilter = useTransform(open, (v) => `blur(${v * 18}px)`)
+
   return (
-    <motion.div
-      className="fixed inset-0 overflow-hidden"
-      style={{ zIndex, perspective: 1400, '--open': 1 }}
-      initial={{ '--open': 1 }}
-      animate={{ '--open': 0, transition: { duration: 1.3, ease: [0.22, 1, 0.36, 1] } }}
-      exit={{ '--open': 1, transition: { duration: 1.7, ease: [0.6, 0, 0.25, 1] } }}
-    >
+    <div className="fixed inset-0 overflow-hidden" style={{ zIndex, perspective: 1400 }}>
       {/* light pouring through the gate as it opens */}
-      <div
+      <motion.div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,#ffffff_0%,rgba(255,236,242,0.95)_30%,rgba(255,209,220,0.6)_60%,transparent_85%)]"
-        style={{ opacity: 'min(calc(var(--open) * 3.5), calc((1 - var(--open)) * 2.2))' }}
+        style={{ opacity: lightOpacity }}
       />
 
       {/* the doors — the whole gate pushes towards her as it opens */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0"
-        style={{ transformStyle: 'preserve-3d', transform: 'scale(calc(1 + var(--open) * 0.12))' }}
-      >
-        {SIDES.map((side) => (
-          <Door key={side} side={side} background={background} dark={dark} />
-        ))}
-      </div>
+      <motion.div aria-hidden="true" className="absolute inset-0" style={{ transformStyle: 'preserve-3d', transform: gateTransform }}>
+        <Door left open={open} background={background} dark={dark} />
+        <Door open={open} background={background} dark={dark} />
+      </motion.div>
 
       {/* the cover content floats in front and drifts forward as the doors open */}
-      <div
-        className="absolute inset-0"
-        style={{
-          opacity: 'calc(1 - var(--open) * 3.5)',
-          transform: 'scale(calc(1 + var(--open) * 0.35))',
-          filter: 'blur(calc(var(--open) * 18px))',
-        }}
-      >
+      <motion.div className="absolute inset-0" style={{ opacity: contentOpacity, transform: contentTransform, filter: contentFilter }}>
         {children}
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   )
 }
 
-function Door({ side, background, dark }) {
-  const left = side === 'left'
+function Door({ left = false, open, background, dark }) {
   const line = dark ? 'border-white/30' : 'border-gold/45'
   const lineSoft = dark ? 'border-white/15' : 'border-gold/25'
   const ornament = dark ? 'text-white/35' : 'text-gold/70'
 
+  const transform = useTransform(open, (v) => `rotateY(${v * (left ? SWING : -SWING)}deg)`)
+  const opacity = useTransform(open, (v) => (1 - v) * 4)
+  const shade = useTransform(open, (v) => v * 0.45)
+
   return (
-    <div
+    <motion.div
       className="absolute inset-y-0 w-1/2"
       style={{
         [left ? 'left' : 'right']: 0,
         transformStyle: 'preserve-3d',
         transformOrigin: left ? 'left center' : 'right center',
-        transform: `rotateY(calc(var(--open) * ${left ? SWING : -SWING}deg))`,
-        opacity: 'calc((1 - var(--open)) * 4)',
+        transform,
+        opacity,
       }}
     >
       {/* face */}
@@ -101,7 +105,7 @@ function Door({ side, background, dark }) {
         <div className={`absolute inset-y-0 w-0.75 bg-linear-to-b from-champagne via-gold to-champagne ${left ? 'right-0' : 'left-0'}`} />
 
         {/* shadow deepening as the door swings away */}
-        <div className="absolute inset-0 bg-rose-deep" style={{ opacity: 'calc(var(--open) * 0.45)' }} />
+        <motion.div className="absolute inset-0 bg-rose-deep" style={{ opacity: shade }} />
       </div>
 
       {/* door thickness, seen as it swings */}
@@ -112,6 +116,6 @@ function Door({ side, background, dark }) {
           background: 'linear-gradient(180deg,#f3dcb6,#c9a26b 50%,#f3dcb6)',
         }}
       />
-    </div>
+    </motion.div>
   )
 }

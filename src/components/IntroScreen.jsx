@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import GlowButton from './ui/GlowButton'
 import { EASE, LetterReveal } from './ui/RevealText'
 import { birthdayData } from '../data/birthdayData'
+import { move } from '../utils/motion'
 
 // When each line appears (ms) — after the gate has swung shut. The last entry is the button.
 const TIMELINE = [1300, 3600, 5600, 7200]
@@ -27,7 +28,7 @@ export default function IntroScreen({ onOpen }) {
       <div className="blob animate-drift right-[-15%] bottom-[-15%] h-[50vmax] w-[50vmax] bg-[#f6dcae]/50 [animation-delay:-6s]" />
       <motion.div
         className="blob top-1/2 left-1/2 h-[40vmax] w-[40vmax] -translate-x-1/2 -translate-y-1/2 bg-white/70"
-        animate={{ scale: [1, 1.15, 1], opacity: [0.6, 0.9, 0.6] }}
+        animate={{ transform: move(['scale(1)', 'scale(1.15)', 'scale(1)']), opacity: [0.6, 0.9, 0.6] }}
         transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
       />
 

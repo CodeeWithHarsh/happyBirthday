@@ -5,6 +5,7 @@ import HeartBurst from './ui/HeartBurst'
 import { EASE, Reveal } from './ui/RevealText'
 import { birthdayData } from '../data/birthdayData'
 import { pinkBurst } from '../utils/effects'
+import { move } from '../utils/motion'
 
 const PAD = 14 // min distance from the visible edges
 const rand = (a, b) => a + Math.random() * (b - a)
@@ -244,7 +245,7 @@ export default function QuestionSection({ accepted, onYes, children }) {
                     <motion.span
                       aria-hidden="true"
                       className="absolute -inset-4 rounded-full bg-blush-400/50 blur-xl"
-                      animate={{ opacity: [0.5, 1, 0.5], scale: [0.95, 1.1, 0.95] }}
+                      animate={{ opacity: [0.5, 1, 0.5], transform: move(['scale(0.95)', 'scale(1.1)', 'scale(0.95)']) }}
                       transition={{ duration: 2, repeat: Infinity }}
                     />
                     <motion.button

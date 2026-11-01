@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { birthdayData } from '../data/birthdayData'
+import { move } from '../utils/motion'
 
 const HEART = 'M16 28.5S3 20.6 3 11.6C3 7.4 6.2 4.5 9.8 4.5c2.6 0 4.8 1.5 6.2 3.6 1.4-2.1 3.6-3.6 6.2-3.6 3.6 0 6.8 2.9 6.8 7.1 0 9-13 16.9-13 16.9z'
 const MIN_DURATION = 2600
@@ -39,7 +40,7 @@ export default function LoadingScreen({ onDone }) {
       <div className="relative h-28 w-28">
         <motion.div
           className="absolute inset-0 rounded-full bg-blush-300/60 blur-2xl"
-          animate={{ scale: [0.8, 1.15, 0.8], opacity: [0.5, 0.9, 0.5] }}
+          animate={{ transform: move(['scale(0.8)', 'scale(1.15)', 'scale(0.8)']), opacity: [0.5, 0.9, 0.5] }}
           transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
         />
         <svg viewBox="0 0 32 32" className="relative h-full w-full overflow-visible" aria-hidden="true">

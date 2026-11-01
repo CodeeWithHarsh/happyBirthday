@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Music } from 'lucide-react'
 import { useMusic } from '../context/MusicContext'
 import { birthdayData } from '../data/birthdayData'
+import { move } from '../utils/motion'
 
 /** Floating glass music button, available everywhere. Autoplay lives in MusicContext. */
 export default function MusicPlayer() {
@@ -78,8 +79,8 @@ export default function MusicPlayer() {
             {[0, 1, 2, 3].map((i) => (
               <motion.span
                 key={i}
-                className="w-0.75 rounded-full bg-blush-500"
-                animate={{ height: ['30%', '100%', '45%', '80%', '30%'] }}
+                className="h-full w-0.75 origin-bottom rounded-full bg-blush-500"
+                animate={{ transform: move(['scaleY(0.3)', 'scaleY(1)', 'scaleY(0.45)', 'scaleY(0.8)', 'scaleY(0.3)']) }}
                 transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.15, ease: 'easeInOut' }}
               />
             ))}

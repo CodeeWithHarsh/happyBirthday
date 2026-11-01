@@ -1,6 +1,7 @@
 import { forwardRef } from 'react'
 import { motion } from 'framer-motion'
 import { HeartShape, Sparkle } from './Icons'
+import { move } from '../../utils/motion'
 
 const SPARKLES = [
   { top: '-18%', left: '6%', size: 12, delay: 0 },
@@ -30,7 +31,7 @@ const GlowButton = forwardRef(function GlowButton({ children, className = '', si
       <motion.span
         aria-hidden="true"
         className="absolute -inset-3 rounded-full bg-blush-400/60 blur-xl"
-        animate={{ opacity: [0.45, 0.9, 0.45], scale: [0.95, 1.08, 0.95] }}
+        animate={{ opacity: [0.45, 0.9, 0.45], transform: move(['scale(0.95)', 'scale(1.08)', 'scale(0.95)']) }}
         transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
       />
 
@@ -43,19 +44,29 @@ const GlowButton = forwardRef(function GlowButton({ children, className = '', si
           />
         ))}
 
+      {/* the rise and the pulse are split across two layers so each keeps its own keyframes */}
       {decorations &&
-        HEARTS.map((h, i) => (
-          <motion.span
-            key={i}
-            aria-hidden="true"
-            className="pointer-events-none absolute -top-2 text-blush-500"
-            style={{ left: h.left, width: h.size, height: h.size }}
-            animate={{ y: [0, -38], opacity: [0, 0.9, 0], scale: [0.6, 1, 0.8] }}
-            transition={{ duration: 2.8, repeat: Infinity, delay: h.delay, ease: 'easeOut' }}
-          >
-            <HeartShape className="h-full w-full" />
-          </motion.span>
-        ))}
+        HEARTS.map((h, i) => {
+          const loop = { duration: 2.8, repeat: Infinity, delay: h.delay, ease: 'easeOut' }
+          return (
+            <motion.span
+              key={i}
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-2 text-blush-500"
+              style={{ left: h.left, width: h.size, height: h.size }}
+              animate={{ transform: move(['translateY(0px)', 'translateY(-38px)']) }}
+              transition={loop}
+            >
+              <motion.span
+                className="block h-full w-full"
+                animate={{ opacity: [0, 0.9, 0], transform: move(['scale(0.6)', 'scale(1)', 'scale(0.8)']) }}
+                transition={loop}
+              >
+                <HeartShape className="h-full w-full" />
+              </motion.span>
+            </motion.span>
+          )
+        })}
 
       <motion.button
         ref={ref}
