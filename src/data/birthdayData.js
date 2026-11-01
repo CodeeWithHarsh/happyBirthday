@@ -10,6 +10,10 @@
                replaced with `girlfriendName`.
    ═══════════════════════════════════════════════════════════════════════════ */
 
+// Resolves a file in /public against the site's base path, so it also works
+// when the site is served from a sub-folder (e.g. GitHub Pages).
+const asset = (path) => `${import.meta.env.BASE_URL}${path}`
+
 export const birthdayData = {
   // ── Basics ───────────────────────────────────────────────────────────────
   girlfriendName: 'Beautiful', // ← change this to her name (or a nickname)
@@ -20,7 +24,7 @@ export const birthdayData = {
   pageTitle: 'For {name} ♡',
 
   // ── Music ────────────────────────────────────────────────────────────────
-  music: '/music/1.mp3',
+  music: asset('music/1.mp3'),
   musicTitle: 'Our Song',
   // The song tries to start by itself as soon as the page opens. Most browsers
   // block sound until the first tap/click/key press, so if that happens it
@@ -106,7 +110,7 @@ export const birthdayData = {
   },
 
   // ── Her portrait ─────────────────────────────────────────────────────────
-  heroPhoto: '/photos/1.jpeg',
+  heroPhoto: asset('photos/1.jpeg'),
   portrait: {
     eyebrow: 'The birthday girl',
     quote: 'If I could give you one thing, it would be the ability to see yourself through my eyes.',
@@ -124,32 +128,32 @@ export const birthdayData = {
       {
         icon: 'smile', title: 'Your Smile',
         text: 'That sweet, shy smile fixes my worst days without even trying.',
-        image: '/photos/2.jpeg', position: 'center 25%',
+        image: asset('photos/2.jpeg'), position: 'center 25%',
       },
       {
         icon: 'flower', title: 'Your Eyes',
         text: 'Soft as the flowers in your hand, and twice as lovely. One look and I forget what I was saying.',
-        image: '/photos/3.jpeg', position: 'center 20%',
+        image: asset('photos/3.jpeg'), position: 'center 20%',
       },
       {
         icon: 'sparkles', title: 'Your Cute Side',
         text: 'Even with a helmet on, you are the most adorable rider I have ever seen.',
-        image: '/photos/4.jpeg', position: 'center 10%',
+        image: asset('photos/4.jpeg'), position: 'center 10%',
       },
       {
         icon: 'laugh', title: 'Your Silly Side',
         text: 'Tongue out, peace sign up. You never let life get too serious, and I love you for it.',
-        image: '/photos/5.jpeg', position: 'center 15%',
+        image: asset('photos/5.jpeg'), position: 'center 15%',
       },
       {
         icon: 'sun', title: 'Your Glow',
         text: 'Colours, sunshine and that smile. You turn any ordinary day into a festival.',
-        image: '/photos/6.jpeg', position: 'center 30%',
+        image: asset('photos/6.jpeg'), position: 'center 30%',
       },
       {
         icon: 'heart', title: 'Us',
         text: 'My favourite thing about you? That out of the whole world, you chose me.',
-        image: '/photos/7.jpeg', position: 'center 30%',
+        image: asset('photos/7.jpeg'), position: 'center 30%',
       },
     ],
   },
@@ -164,21 +168,21 @@ export const birthdayData = {
     title: 'Our Little Memories ♡',
     subtitle: 'Some moments are too precious to only keep in my head.',
     photos: [
-      { src: '/photos/8.jpeg', frame: 'polaroid', caption: 'Cheek to cheek ♡', position: 'center 38%' },
-      { src: '/photos/15-upright.jpeg', frame: 'plain', caption: "That laugh. I'd do anything for it.", position: 'center 40%' },
-      { src: '/photos/10.jpeg', frame: 'tape', caption: 'Ciao, but never goodbye ♡', position: 'center 42%' },
-      { src: '/photos/9.jpeg', frame: 'corners', caption: 'Safe in my arms.', position: 'center 30%' },
-      { src: '/photos/7.jpeg', frame: 'polaroid', caption: 'Flowers for my flower ♡', position: 'center 45%' },
-      { src: '/photos/11.jpeg', frame: 'tape', caption: 'My favourite person.', position: 'center 30%' },
-      { src: '/photos/16.jpeg', frame: 'polaroid', caption: 'Pizza dates with you ♡', position: 'center 35%' },
-      { src: '/photos/14.jpeg', frame: 'plain', caption: 'You + me.', position: 'center 40%' },
-      { src: '/photos/12.jpeg', frame: 'corners', caption: 'Stolen kisses.', position: 'center 45%' },
+      { src: asset('photos/8.jpeg'), frame: 'polaroid', caption: 'Cheek to cheek ♡', position: 'center 38%' },
+      { src: asset('photos/15-upright.jpeg'), frame: 'plain', caption: "That laugh. I'd do anything for it.", position: 'center 40%' },
+      { src: asset('photos/10.jpeg'), frame: 'tape', caption: 'Ciao, but never goodbye ♡', position: 'center 42%' },
+      { src: asset('photos/9.jpeg'), frame: 'corners', caption: 'Safe in my arms.', position: 'center 30%' },
+      { src: asset('photos/7.jpeg'), frame: 'polaroid', caption: 'Flowers for my flower ♡', position: 'center 45%' },
+      { src: asset('photos/11.jpeg'), frame: 'tape', caption: 'My favourite person.', position: 'center 30%' },
+      { src: asset('photos/16.jpeg'), frame: 'polaroid', caption: 'Pizza dates with you ♡', position: 'center 35%' },
+      { src: asset('photos/14.jpeg'), frame: 'plain', caption: 'You + me.', position: 'center 40%' },
+      { src: asset('photos/12.jpeg'), frame: 'corners', caption: 'Stolen kisses.', position: 'center 45%' },
     ],
   },
 
   // ── The blurred "reveal" photo ───────────────────────────────────────────
   reveal: {
-    photo: '/photos/17.jpeg',
+    photo: asset('photos/17.jpeg'),
     title: 'Six little moments are hiding behind this blur...',
     button: 'Reveal it ♡',
     messageTitle: 'Six frames, one favourite day.',
@@ -448,7 +452,7 @@ export const birthdayData = {
 
   // ── Final surprise ───────────────────────────────────────────────────────
   // Shown inside a heart; finalPhotoPosition keeps her face in the middle of it
-  finalPhoto: '/photos/13.jpeg',
+  finalPhoto: asset('photos/13.jpeg'),
   finalPhotoPosition: 'center 25%',
   final: {
     intro: 'One Last Thing...',
